@@ -32,18 +32,18 @@ namespace Api.Services
                 var hacks = (await httpResponseMessage.Content.ReadFromJsonAsync<ContestHacksDTO>()).result;
 
                 return hacks
-                    .Where(h => 
-                        h.judgeProtocol.protocol.Contains(_inputPrefix + input + _inputSuffix) && 
-                        (output == null || h.judgeProtocol.protocol.Contains(_outputPrefix + output + _outputSuffix)) && 
+                    .Where(h =>
+                        h.judgeProtocol.protocol.Contains(_inputPrefix + input + _inputSuffix) &&
+                        (output == null || h.judgeProtocol.protocol.Contains(_outputPrefix + output + _outputSuffix)) &&
                         h.problem.index == index)
-                    .Select(h => 
+                    .Select(h =>
                         h.defender.members.FirstOrDefault().handle);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
 
-                return Enumerable.Empty<string>();
+                throw new Exception("CF API is down");
             }
         }
     }
