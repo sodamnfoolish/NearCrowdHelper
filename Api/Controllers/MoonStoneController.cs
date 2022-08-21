@@ -17,7 +17,15 @@ namespace Api.Controllers
 
         [HttpPost("FindHack")]
         public async Task<ActionResult<IEnumerable<string>>> Get([FromBody] FindHackDTO findHackDTO)
-            => Ok(await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output));
-        
+        {
+            try
+            {
+                return Ok(await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(424, ex.Message);
+            }
+        }
     }
 }
