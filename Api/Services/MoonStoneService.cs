@@ -38,7 +38,7 @@ namespace Api.Services
             {
                 Console.WriteLine(e.Message);
 
-                throw new Exception("CF API is down");
+                throw new Exception("There are some problems with CF API");
             }
 
             return hacks
