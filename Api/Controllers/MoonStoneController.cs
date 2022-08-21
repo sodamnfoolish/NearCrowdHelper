@@ -17,6 +17,6 @@ namespace Api.Controllers
 
         [HttpPost("FindHack")]
         public async Task<IEnumerable<string>> Get([FromBody] FindHackDTO findHackDTO)
-            => await _moonStoneService.FindHack(findHackDTO.contest, findHackDTO.problem, findHackDTO.test);
+            => await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output);
     }
 }
