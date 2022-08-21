@@ -1,5 +1,6 @@
 ﻿using Api.DTOs;
 using Api.Extensions;
+using Api.Entities;
 
 namespace Api.Services
 {
@@ -25,19 +26,13 @@ namespace Api.Services
             var contestId = problem.GetContestId();
             var index = problem.GetIndex();
 
+            var hacks = new List<Hack>();
+
             try
             {
                 HttpResponseMessage httpResponseMessage = await _cfApiHttpClient.GetAsync($"contest.hacks?contestId={contestId}");
 
-                var hacks = (await httpResponseMessage.Content.ReadFromJsonAsync<ContestHacksDTO>()).result;
-
-                return hacks
-                    .Where(h =>
-                        h.judgeProtocol.protocol.Contains(_inputPrefix + input + _inputSuffix) &&
-                        (output == null || h.judgeProtocol.protocol.Contains(_outputPrefix + output + _outputSuffix)) &&
-                        h.problem.index == index)
-                    .Select(h =>
-                        h.defender.members.FirstOrDefault().handle);
+                hacks = (await httpResponseMessage.Content.ReadFromJsonAsync<ContestHacksDTO>()).result;
             }
             catch (Exception e)
             {
@@ -45,6 +40,14 @@ namespace Api.Services
 
                 throw new Exception("CF API is down");
             }
+
+            return hacks
+                .Where(h =>
+                    h.judgeProtocol.protocol.Contains(_inputPrefix + input + _inputSuffix) &&
+                    (output == null || h.judgeProtocol.protocol.Contains(_outputPrefix + output + _outputSuffix)) &&
+                    h.problem.index == index)
+                .Select(h =>
+                    h.defender.members.FirstOrDefault().handle);
         }
     }
 }

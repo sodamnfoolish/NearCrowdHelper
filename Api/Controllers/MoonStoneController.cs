@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Api.Services;
 using Api.DTOs;
+using Api.Extensions;
 
 namespace Api.Controllers
 {
@@ -17,15 +18,6 @@ namespace Api.Controllers
 
         [HttpPost("FindHack")]
         public async Task<ActionResult<IEnumerable<string>>> Get([FromBody] FindHackDTO findHackDTO)
-        {
-            try
-            {
-                return Ok(await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(424, ex.Message);
-            }
-        }
+            => Ok(await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output));
     }
 }
