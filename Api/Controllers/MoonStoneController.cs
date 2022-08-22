@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Api.Services;
-using Api.DTOs;
-using Api.Extensions;
+using Domain.DTOs;
+using Domain.Extensions;
 
 namespace Api.Controllers
 {
@@ -21,15 +21,15 @@ namespace Api.Controllers
             => Ok(await _moonStoneService.FindHandlesByHack(
                 findHandlesByHackDTO.problem.GetContestId(), 
                 findHandlesByHackDTO.problem.GetIndex(), 
-                findHandlesByHackDTO.input, 
-                findHandlesByHackDTO.output));
+                findHandlesByHackDTO.input.ReplaceLineEndings(), 
+                findHandlesByHackDTO.output!.ReplaceLineEndings()));
 
         [HttpPost("FindOkSubmissionsByHack")]
         public async Task<ActionResult<IEnumerable<int>>> FindOkSubmissionsByHack([FromBody] FindOkSubmissionsByHackDTO findOkSubmissionsByHackDTO)
             => Ok(await _moonStoneService.FindOkSubmissionsByHack(
                 findOkSubmissionsByHackDTO.problem.GetContestId(),
                 findOkSubmissionsByHackDTO.problem.GetIndex(),
-                findOkSubmissionsByHackDTO.input,
-                findOkSubmissionsByHackDTO.output));
+                findOkSubmissionsByHackDTO.input.ReplaceLineEndings(),
+                findOkSubmissionsByHackDTO.output!.ReplaceLineEndings()));
     }
 }

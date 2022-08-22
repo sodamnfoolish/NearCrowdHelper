@@ -1,6 +1,6 @@
-﻿using Api.Entities;
-using Api.DTOs;
-using Api.Contstants;
+﻿using Domain.Entities;
+using Domain.DTOs;
+using Domain.Contstants;
 
 namespace Api.Services
 {
