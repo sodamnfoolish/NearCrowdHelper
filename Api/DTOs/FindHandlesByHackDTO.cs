@@ -2,7 +2,7 @@
 
 namespace Api.DTOs
 {
-    public class FindHackDTO
+    public class FindHandlesByHackDTO
     {
         [DefaultValue("123D")]
         public string problem { get; set; }
