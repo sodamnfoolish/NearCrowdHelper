@@ -16,8 +16,20 @@ namespace Api.Controllers
             _moonStoneService = new(configuration);
         }
 
-        [HttpPost("FindHack")]
-        public async Task<ActionResult<IEnumerable<string>>> Get([FromBody] FindHackDTO findHackDTO)
-            => Ok(await _moonStoneService.FindHack(findHackDTO.problem, findHackDTO.input, findHackDTO.output));
+        [HttpPost("FindHandlesByHack")]
+        public async Task<ActionResult<IEnumerable<string>>> FindHandles([FromBody] FindHandlesByHackDTO findHandlesByHackDTO)
+            => Ok(await _moonStoneService.FindHandlesByHack(
+                findHandlesByHackDTO.problem.GetContestId(), 
+                findHandlesByHackDTO.problem.GetIndex(), 
+                findHandlesByHackDTO.input, 
+                findHandlesByHackDTO.output));
+
+        [HttpPost("FindOkSubmissionsByHack")]
+        public async Task<ActionResult<IEnumerable<int>>> FindOkSubmissionsByHack([FromBody] FindOkSubmissionsByHackDTO findOkSubmissionsByHackDTO)
+            => Ok(await _moonStoneService.FindOkSubmissionsByHack(
+                findOkSubmissionsByHackDTO.problem.GetContestId(),
+                findOkSubmissionsByHackDTO.problem.GetIndex(),
+                findOkSubmissionsByHackDTO.input,
+                findOkSubmissionsByHackDTO.output));
     }
 }
