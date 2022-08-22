@@ -43,7 +43,7 @@ namespace Api.Services
                     handles.Contains(s.author.members.FirstOrDefault()!.handle) &&
                     s.problem.index == index &&
                     s.verdict == MoonStoneConstants.Verticts.OK.ToString() &&
-                    s.author.participantType == MoonStoneConstants.ParticipantTypes.CONTESTANT.ToString() &&
+                    //s.author.participantType == MoonStoneConstants.ParticipantTypes.CONTESTANT.ToString() && possible OK after contest
                     s.programmingLanguage.Contains(MoonStoneConstants.ProgrammingLanguagePrefix))
                 .Select(s => s.id);
         }
