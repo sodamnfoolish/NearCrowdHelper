@@ -1,4 +1,6 @@
-﻿namespace Api.Entities
+﻿using System.Collections.Generic;
+
+namespace Domain.Entities
 {
     public class Party
     {

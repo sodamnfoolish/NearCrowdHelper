@@ -1,4 +1,6 @@
-﻿namespace Api.Extensions
+﻿using System;
+
+namespace Domain.Extensions
 {
     public static class MoonStoneExtension
     {

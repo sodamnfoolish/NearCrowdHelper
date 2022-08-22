@@ -1,4 +1,4 @@
-﻿namespace Api.Contstants
+﻿namespace Domain.Contstants
 {
     public class MoonStoneConstants
     {

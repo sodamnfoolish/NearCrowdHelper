@@ -1,4 +1,6 @@
-﻿namespace Api.DTOs
+﻿using System.Collections.Generic;
+
+namespace Domain.DTOs
 {
     public class CFApiResponseDTO<T> where T : class
     {

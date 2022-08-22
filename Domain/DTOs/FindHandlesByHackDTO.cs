@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Api.DTOs
+namespace Domain.DTOs
 {
     public class FindHandlesByHackDTO
     {
