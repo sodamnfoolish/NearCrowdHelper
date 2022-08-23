@@ -24,7 +24,7 @@ namespace Api.Services
             return hacks
                 .Where(h =>
                     h.judgeProtocol.protocol.Contains(MoonStoneConstants.InputPrefix + input + MoonStoneConstants.InputSuffix) &&
-                    (output == null || h.judgeProtocol.protocol.Contains(MoonStoneConstants.OutputPrefix + output + MoonStoneConstants.OutputSuffix)) &&
+                    (output == null || output.TrimEnd() == string.Empty || h.judgeProtocol.protocol.Contains(MoonStoneConstants.OutputPrefix + output + MoonStoneConstants.OutputSuffix)) &&
                     h.problem.index == index)
                 .Select(h =>
                     h.defender.members.FirstOrDefault()!.handle);
