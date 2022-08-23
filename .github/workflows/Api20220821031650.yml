@@ -4,8 +4,8 @@ on:
     branches:
     - master
     paths:
-    - Domain/
-    - Api/
+    - 'Domain/**'
+    - 'Api/**'
 env:
   AZURE_WEBAPP_NAME: Api20220821031650
   AZURE_WEBAPP_PACKAGE_PATH: Api\publish

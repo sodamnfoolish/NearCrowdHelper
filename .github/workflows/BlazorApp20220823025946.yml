@@ -4,8 +4,8 @@ on:
     branches:
     - master
     paths:
-    - Domain/
-    - BlazorApp/
+    - 'Domain/**'
+    - 'BlazorApp/**'
 env:
   AZURE_WEBAPP_NAME: BlazorApp20220823025946
   AZURE_WEBAPP_PACKAGE_PATH: BlazorApp\published
