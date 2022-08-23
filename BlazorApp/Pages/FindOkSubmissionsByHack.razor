@@ -1,0 +1,105 @@
+﻿@using System.Net.Http;
+@using Domain.DTOs;
+@using Domain.Extensions;
+@inject IConfiguration _configuration;
+
+@page "/FindHandlesByHack"
+
+<div>
+    Problem:
+</div>
+
+<div>
+    <input @bind="_problem"></input>
+</div>
+
+<div>
+    Input:
+</div>
+
+<div>
+    <textarea @bind=_input></textarea>
+</div>
+
+<div>
+    Output:
+</div>
+
+<div>
+    <textarea @bind=_output></textarea>
+</div>
+
+<div>
+    <button @onclick="OnClickFindHandlesByHack">FindHandlesByHack</button>
+</div>
+
+<div>
+    Status: @_status
+</div>
+
+@if (_status == Statuses.Done)
+{
+    <div>
+        <a href="@_cfStatusLink">
+            Status link
+        </a>
+    </div>
+
+    @foreach(var handle in _handles)
+    {
+        <div>
+            @handle
+        </div>
+    }
+}
+
+@code {
+    private enum Statuses
+    {
+        None,
+        Wait,
+        Done,
+    }
+
+    private string _problem;
+    private string _input;
+    private string _output;
+    private Statuses _status;
+    private string _cfStatusLink;
+    private HttpClient _httpClient;
+    private IEnumerable<string> _handles;
+
+    protected override void OnInitialized()
+    {
+        _problem = string.Empty;
+        _input = string.Empty;
+        _output = string.Empty;
+        _status = Statuses.None;
+        _cfStatusLink = string.Empty;
+
+        _httpClient = new()
+            {
+                BaseAddress = new(_configuration["ApiUrl"])
+            };
+
+        _httpClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
+    }
+
+    private async Task OnClickFindHandlesByHack()
+    {
+        _status = Statuses.Wait;
+
+        var httpResponseMessage = await _httpClient.PostAsJsonAsync<FindHandlesByHackDTO>("MoonStone/FindHandlesByHack", new FindHandlesByHackDTO
+            {
+                problem = _problem,
+                input = _input,
+                output = _output
+            });
+
+        _handles = await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<string>>();
+
+        _cfStatusLink = $"https://codeforces.com/contest/{_problem.GetContestId()}/status";
+
+        _status = Statuses.Done;
+    }
+}
