@@ -5,6 +5,13 @@
 
 @page "/FindOkSubmissionsByHack"
 
+<style>
+textarea {
+        width: 100%;
+        height: 200px;
+    }
+</style>
+
 <div>
     Problem:
 </div>
@@ -18,7 +25,7 @@
 </div>
 
 <div>
-    <textarea @bind=_input></textarea>
+    <textarea @bind=_input class="width=100%"></textarea>
 </div>
 
 <div>
@@ -30,7 +37,7 @@
 </div>
 
 <div>
-    <button @onclick="OnClickFindHandlesByHack">FindHandlesByHack</button>
+    <button @onclick="OnClickFindOkSubmissionsByHack">FindOkSubmissionsByHack</button>
 </div>
 
 <div>
@@ -39,16 +46,12 @@
 
 @if (_status == Statuses.Done)
 {
-    <div>
-        <a href="@_cfStatusLink">
-            Status link
-        </a>
-    </div>
-
-    @foreach(var handle in _handles)
+    @foreach(var submission in _submissions)
     {
         <div>
-            @handle
+            <a href="@GetLinkBySubmission(submission)">
+                @submission
+            </a>
         </div>
     }
 }
@@ -67,7 +70,7 @@
     private Statuses _status;
     private string _cfStatusLink;
     private HttpClient _httpClient;
-    private IEnumerable<string> _handles;
+    private IEnumerable<int> _submissions;
 
     protected override void OnInitialized()
     {
@@ -85,21 +88,22 @@
         _httpClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
     }
 
-    private async Task OnClickFindHandlesByHack()
+    private async Task OnClickFindOkSubmissionsByHack()
     {
         _status = Statuses.Wait;
 
-        var httpResponseMessage = await _httpClient.PostAsJsonAsync<FindHandlesByHackDTO>("MoonStone/FindHandlesByHack", new FindHandlesByHackDTO
+        var httpResponseMessage = await _httpClient.PostAsJsonAsync<FindOkSubmissionsByHackDTO>("MoonStone/FindOkSubmissionsByHack", new FindOkSubmissionsByHackDTO
             {
                 problem = _problem,
                 input = _input,
                 output = _output
             });
 
-        _handles = await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<string>>();
-
-        _cfStatusLink = $"https://codeforces.com/contest/{_problem.GetContestId()}/status";
+        _submissions = await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<int>>();
 
         _status = Statuses.Done;
     }
+
+    private string GetLinkBySubmission(int submission)
+        => $"https://codeforces.com/contest/{_problem.GetContestId()}/submission/{submission}";
 }
